@@ -9,14 +9,36 @@ from sklearn.pipeline import make_pipeline
 
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
+import os
+from dotenv import load_dotenv
+
+
+"""Exercise 6 - Environment-Based Configuration"""
+#Define the project root directory
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+#Load environment variables from the .env file
+load_dotenv(BASE_DIR / ".env")
+
+#Configure the dataset path using environment variables
+DATA_PATH = BASE_DIR / os.getenv(
+    "DATA_PATH", "data/wine.csv"
+)
+TEST_SIZE = float(os.getenv("TEST_SIZE", "0.2"))
+RANDOM_SEED = int(os.getenv("RANDOM_SEED", "23"))
+
+
+RESULTS_PATH = BASE_DIR / "wyniki.txt"
+"""
 #Define project paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_PATH = BASE_DIR / "data" / "wine.csv"
-RESULTS_PATH = BASE_DIR / "wyniki.txt"
 
 #Define experiment configuration
 TEST_SIZE = 0.2
 RANDOM_SEED = 23
+"""
+
 
 """Exercise 3: Data Loading and Exploratory Data Analysis"""
 #Load the Wine dataset from scikit-learn
