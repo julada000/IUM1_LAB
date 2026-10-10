@@ -7,9 +7,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
 #Define project paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_PATH = BASE_DIR / "data" / "wine.csv"
+RESULTS_PATH = BASE_DIR / "wyniki.txt"
 
 #Define experiment configuration
 TEST_SIZE = 0.2
@@ -89,3 +92,44 @@ model.fit(X_train, y_train)
 
 print("\nModel training completed successfully!")
 
+
+
+"""Exercise 5: Model Evaluation"""
+#Generate predictions on the test dataset
+y_pred = model.predict(X_test)
+
+#Calculate the model's classification accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+#Generate a detailed classification performance report
+report = classification_report(
+    y_test,
+    y_pred,
+    target_names=wine.target_names
+)
+
+#Display model evaluation results
+print("\nModel Accuracy:")
+print(f"{accuracy:.4f}")
+
+print("\nClassification Report:")
+print(report)
+
+#Generate the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+#Display the confusion matrix
+print("\nConfusion Matrix:")
+print(cm)
+
+
+
+#Save evaluation results to a text file
+with open(RESULTS_PATH, "w", encoding="utf-8") as f:
+    f.write(f"Accuracy: {accuracy:.4f}\n\n")
+    f.write("Classification Report:\n")
+    f.write(report)
+    f.write("\nConfusion Matrix:\n")
+    f.write(str(cm))
+
+print(f"\nEvaluation results saved to {RESULTS_PATH.name}")
